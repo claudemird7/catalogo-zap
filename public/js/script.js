@@ -1,0 +1,1 @@
+console.log("Catalogo Zap iniciado.");

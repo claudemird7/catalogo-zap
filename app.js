@@ -1,14 +1,19 @@
 const express = require("express");
+const path = require("path");
 
 const app = express();
 
 const PORT = 3000;
 
+// Arquivos públicos
+app.use(express.static(path.join(__dirname, "public")));
+
+// Página inicial
 app.get("/", (req, res) => {
-    res.send("<h1>Bem-vindo ao Catálogo Zap!</h1>");
+    res.sendFile(path.join(__dirname, "views", "index.html"));
 });
 
+// Iniciar servidor
 app.listen(PORT, () => {
-    console.log(`Servidor rodando em http://localhost:${PORT}`);
+    console.log(`Servidor iniciado em http://localhost:${PORT}`);
 });
-
