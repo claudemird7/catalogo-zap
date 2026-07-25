@@ -1,21 +1,63 @@
 body{
 
-background:#f5f5f5;
+background:#f1f3f5;
 
-font-family:Arial, Helvetica, sans-serif;
+font-family:Arial,Helvetica,sans-serif;
 
 }
 
-h1{
+.navbar{
 
-font-weight:bold;
+box-shadow:0 2px 10px rgba(0,0,0,.15);
+
+}
+
+.card{
+
+border:none;
+
+border-radius:15px;
+
+box-shadow:0 3px 8px rgba(0,0,0,.1);
+
+transition:.3s;
+
+margin-bottom:20px;
+
+}
+
+.card:hover{
+
+transform:translateY(-5px);
+
+}
+
+.card img{
+
+height:220px;
+
+object-fit:cover;
+
+border-radius:15px 15px 0 0;
 
 }
 
 .btn-success{
 
-padding:12px 25px;
-
 border-radius:12px;
+
+}
+
+.list-group-item{
+
+cursor:pointer;
+
+}
+
+.list-group-item:hover{
+
+background:#198754;
+
+color:white;
 
 }
