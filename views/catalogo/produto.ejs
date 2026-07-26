@@ -1,0 +1,198 @@
+<%- include("../partials/header") %>
+
+<main class="pagina-produto">
+
+    <a href="/" class="voltar-catalogo">
+        <i class="bi bi-arrow-left"></i>
+        Voltar ao catálogo
+    </a>
+
+    <section class="produto-detalhes">
+
+        <div class="produto-galeria">
+
+            <div class="produto-imagem-principal">
+                <img
+                    id="imagemPrincipal"
+                    src="<%= produto.imagens[0] %>"
+                    alt="<%= produto.nome %>"
+                >
+            </div>
+
+            <div class="produto-miniaturas">
+
+                <% produto.imagens.forEach((imagem, indice) => { %>
+
+                    <button
+                        type="button"
+                        class="miniatura-produto <%= indice === 0 ? 'ativa' : '' %>"
+                        data-imagem="<%= imagem %>"
+                        aria-label="Ver imagem <%= indice + 1 %>"
+                    >
+                        <img
+                            src="<%= imagem %>"
+                            alt="Imagem <%= indice + 1 %> de <%= produto.nome %>"
+                        >
+                    </button>
+
+                <% }) %>
+
+            </div>
+
+        </div>
+
+        <div class="produto-dados">
+
+            <span class="produto-categoria">
+                <%= produto.categoria %>
+            </span>
+
+            <h1>
+                <%= produto.nome %>
+            </h1>
+
+            <div class="produto-meta">
+                <span>Ref.: <%= produto.referencia %></span>
+                <span><%= produto.marca %></span>
+            </div>
+
+            <p class="produto-descricao">
+                <%= produto.descricao %>
+            </p>
+
+            <div class="produto-preco-detalhes">
+
+                <% if (produto.precoAntigo > produto.precoAtual) { %>
+
+                    <span class="preco-antigo-detalhes">
+                        R$ <%= produto.precoAntigo.toFixed(2).replace(".", ",") %>
+                    </span>
+
+                <% } %>
+
+                <div class="preco-atual-linha">
+
+                    <strong>
+                        R$ <%= produto.precoAtual.toFixed(2).replace(".", ",") %>
+                    </strong>
+
+                    <% if (produto.precoAntigo > produto.precoAtual) { %>
+
+                        <span class="selo-desconto-detalhes">
+
+                            -<%= Math.round(
+                                ((produto.precoAntigo - produto.precoAtual) /
+                                produto.precoAntigo) * 100
+                            ) %>%
+
+                        </span>
+
+                    <% } %>
+
+                </div>
+
+            </div>
+
+            <div class="grupo-variacao">
+
+                <h2>Cor</h2>
+
+                <div class="lista-cores" id="listaCores">
+
+                    <% produto.cores.forEach((cor, indice) => { %>
+
+                        <button
+                            type="button"
+                            class="opcao-cor <%= indice === 0 ? 'selecionada' : '' %>"
+                            data-cor="<%= cor.nome %>"
+                            title="<%= cor.nome %>"
+                            aria-label="<%= cor.nome %>"
+                            style="--cor-opcao: <%= cor.valor %>"
+                        ></button>
+
+                    <% }) %>
+
+                </div>
+
+                <span class="variacao-selecionada" id="corSelecionada">
+                    <%= produto.cores[0].nome %>
+                </span>
+
+            </div>
+
+            <div class="grupo-variacao">
+
+                <h2>Tamanho</h2>
+
+                <div class="lista-tamanhos" id="listaTamanhos">
+
+                    <% produto.tamanhos.forEach((tamanho, indice) => { %>
+
+                        <button
+                            type="button"
+                            class="opcao-tamanho <%= indice === 0 ? 'selecionada' : '' %>"
+                            data-tamanho="<%= tamanho %>"
+                        >
+                            <%= tamanho %>
+                        </button>
+
+                    <% }) %>
+
+                </div>
+
+            </div>
+
+            <div class="grupo-quantidade">
+
+                <span>Quantidade</span>
+
+                <div class="controle-quantidade">
+
+                    <button
+                        type="button"
+                        id="diminuirQuantidade"
+                        aria-label="Diminuir quantidade"
+                    >
+                        <i class="bi bi-dash"></i>
+                    </button>
+
+                    <input
+                        type="number"
+                        id="quantidadeProduto"
+                        min="1"
+                        value="1"
+                        readonly
+                    >
+
+                    <button
+                        type="button"
+                        id="aumentarQuantidade"
+                        aria-label="Aumentar quantidade"
+                    >
+                        <i class="bi bi-plus"></i>
+                    </button>
+
+                </div>
+
+            </div>
+
+            <button
+                type="button"
+                class="botao-adicionar-produto"
+                id="adicionarProduto"
+                data-produto-id="<%= produto.id %>"
+                data-produto-nome="<%= produto.nome %>"
+                data-produto-preco="<%= produto.precoAtual %>"
+                data-produto-imagem="<%= produto.imagens[0] %>"
+            >
+                <i class="bi bi-cart-plus"></i>
+                Adicionar ao carrinho
+            </button>
+
+        </div>
+
+    </section>
+
+</main>
+
+<%- include("../partials/footer") %>

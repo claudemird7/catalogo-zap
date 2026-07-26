@@ -1,0 +1,160 @@
+<%- include("../partials/header") %>
+
+<nav class="barra-categorias" aria-label="Categorias de produtos">
+    <div class="categorias-conteudo" id="listaCategorias">
+
+        <button
+            type="button"
+            class="categoria-botao ativo"
+            data-categoria="todos"
+        >
+            Todos
+        </button>
+
+        <button
+            type="button"
+            class="categoria-botao"
+            data-categoria="atacado"
+        >
+            Atacado
+        </button>
+
+        <button
+            type="button"
+            class="categoria-botao"
+            data-categoria="tenis"
+        >
+            Tênis
+        </button>
+
+        <button
+            type="button"
+            class="categoria-botao"
+            data-categoria="blusas"
+        >
+            Blusas
+        </button>
+
+        <button
+            type="button"
+            class="categoria-botao"
+            data-categoria="calcas"
+        >
+            Calças
+        </button>
+
+        <button
+            type="button"
+            class="categoria-botao"
+            data-categoria="camisetas"
+        >
+            Camisetas
+        </button>
+
+        <button
+            type="button"
+            class="categoria-botao"
+            data-categoria="acessorios"
+        >
+            Acessórios
+        </button>
+
+    </div>
+</nav>
+
+<main class="pagina-catalogo">
+
+    <section class="cabecalho-listagem">
+
+        <div>
+            <p class="texto-secundario">
+                Confira nossos produtos
+            </p>
+
+            <h1>
+                Catálogo
+            </h1>
+        </div>
+
+        <span class="quantidade-resultados" id="quantidadeResultados">
+            0 produtos
+        </span>
+
+    </section>
+
+    <section
+        class="grade-produtos"
+        id="produtos"
+        aria-live="polite"
+    ></section>
+
+    <div class="nenhum-produto" id="nenhumProduto" hidden>
+        <i class="bi bi-search"></i>
+
+        <h2>Nenhum produto encontrado</h2>
+
+        <p>
+            Tente pesquisar outro nome ou selecionar outra categoria.
+        </p>
+    </div>
+
+</main>
+
+<button
+    type="button"
+    class="whatsapp-flutuante"
+    id="whatsappFlutuante"
+    aria-label="Falar pelo WhatsApp"
+>
+    <i class="bi bi-whatsapp"></i>
+</button>
+
+<aside
+    class="painel-lateral"
+    id="painelCarrinho"
+    aria-hidden="true"
+>
+    <div class="painel-cabecalho">
+        <div>
+            <span class="painel-subtitulo">Sua seleção</span>
+            <h2>Carrinho</h2>
+        </div>
+
+        <button
+            type="button"
+            class="fechar-painel"
+            id="fecharCarrinho"
+            aria-label="Fechar carrinho"
+        >
+            <i class="bi bi-x-lg"></i>
+        </button>
+    </div>
+
+    <div class="painel-conteudo" id="itensCarrinho">
+        <div class="carrinho-vazio">
+            <i class="bi bi-cart-x"></i>
+
+            <p>Seu carrinho está vazio.</p>
+        </div>
+    </div>
+
+    <div class="painel-rodape">
+        <div class="resumo-carrinho">
+            <span>Total</span>
+            <strong id="totalCarrinho">R$ 0,00</strong>
+        </div>
+
+        <button
+            type="button"
+            class="botao-whatsapp-carrinho"
+            id="enviarWhatsApp"
+        >
+            <i class="bi bi-whatsapp"></i>
+            Enviar pelo WhatsApp
+        </button>
+    </div>
+</aside>
+
+<div class="fundo-painel" id="fundoPainel"></div>
+
+<%- include("../partials/footer") %>

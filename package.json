@@ -1,16 +1,26 @@
 {
   "name": "catalogo-zap",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Catálogo online com carrinho e envio para WhatsApp",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node app.js",
+    "dev": "nodemon app.js"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "catalogo",
+    "whatsapp",
+    "node",
+    "express"
+  ],
+  "author": "Claudemir Ferreira",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
+    "ejs": "^6.0.1",
     "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
   }
 }
