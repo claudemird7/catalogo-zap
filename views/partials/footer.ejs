@@ -1,0 +1,273 @@
+<aside
+    class="painel-lateral"
+    id="painelCarrinho"
+    aria-hidden="true"
+>
+    <div class="painel-cabecalho">
+        <div>
+            <span class="painel-subtitulo">Sua seleção</span>
+            <h2>Carrinho</h2>
+        </div>
+
+        <button
+            type="button"
+            class="fechar-painel"
+            id="fecharCarrinho"
+            aria-label="Fechar carrinho"
+        >
+            <i class="bi bi-x-lg"></i>
+        </button>
+    </div>
+
+    <div class="painel-conteudo" id="itensCarrinho">
+        <div class="carrinho-vazio">
+            <i class="bi bi-cart-x"></i>
+            <p>Seu carrinho está vazio.</p>
+        </div>
+    </div>
+
+    <div class="painel-rodape">
+        <div class="resumo-carrinho">
+            <span>Total</span>
+            <strong id="totalCarrinho">R$ 0,00</strong>
+        </div>
+
+        <div class="acoes-finais-carrinho">
+            <button
+                type="button"
+                class="botao-limpar-carrinho"
+                id="limparCarrinho"
+            >
+                <i class="bi bi-trash3"></i>
+                Limpar carrinho
+            </button>
+
+            <button
+                type="button"
+                class="botao-whatsapp-carrinho"
+                id="enviarWhatsApp"
+            >
+                <i class="bi bi-whatsapp"></i>
+                Finalizar pelo WhatsApp
+            </button>
+        </div>
+    </div>
+</aside>
+
+<div class="fundo-painel" id="fundoPainel"></div>
+
+<div
+    class="modal-pedido"
+    id="modalPedido"
+    aria-hidden="true"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="tituloModalPedido"
+>
+    <div
+        class="modal-pedido-fundo"
+        id="fundoModalPedido"
+    ></div>
+
+    <div class="modal-pedido-caixa">
+        <div class="modal-pedido-cabecalho">
+            <div>
+                <span class="modal-pedido-subtitulo">
+                    Última etapa
+                </span>
+
+                <h2 id="tituloModalPedido">
+                    Finalizar pedido
+                </h2>
+            </div>
+
+            <button
+                type="button"
+                class="fechar-modal-pedido"
+                id="fecharModalPedido"
+                aria-label="Fechar formulário"
+            >
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+
+        <form
+            class="formulario-pedido"
+            id="formularioPedido"
+            novalidate
+        >
+            <div class="campo-formulario">
+                <label for="nomeComprador">
+                    Nome
+                    <span aria-hidden="true">*</span>
+                </label>
+
+                <input
+                    type="text"
+                    id="nomeComprador"
+                    name="nomeComprador"
+                    placeholder="Digite seu nome"
+                    autocomplete="name"
+                    maxlength="80"
+                    required
+                >
+
+                <small
+                    class="mensagem-erro"
+                    id="erroNomeComprador"
+                ></small>
+            </div>
+
+            <div class="campo-formulario">
+                <label for="telefoneComprador">
+                    Telefone
+                    <span aria-hidden="true">*</span>
+                </label>
+
+                <input
+                    type="tel"
+                    id="telefoneComprador"
+                    name="telefoneComprador"
+                    placeholder="(11) 99999-9999"
+                    autocomplete="tel"
+                    inputmode="tel"
+                    maxlength="20"
+                    required
+                >
+
+                <small
+                    class="mensagem-erro"
+                    id="erroTelefoneComprador"
+                ></small>
+            </div>
+
+            <fieldset class="campo-formulario grupo-entrega">
+                <legend>
+                    Forma de recebimento
+                    <span aria-hidden="true">*</span>
+                </legend>
+
+                <div class="opcoes-entrega">
+                    <label class="opcao-entrega">
+                        <input
+                            type="radio"
+                            name="formaRecebimento"
+                            value="entrega"
+                        >
+
+                        <span class="opcao-entrega-conteudo">
+                            <i class="bi bi-truck"></i>
+
+                            <span>
+                                <strong>Receber em casa</strong>
+                                <small>Entrega no endereço informado</small>
+                            </span>
+                        </span>
+                    </label>
+
+                    <label class="opcao-entrega">
+                        <input
+                            type="radio"
+                            name="formaRecebimento"
+                            value="retirada"
+                        >
+
+                        <span class="opcao-entrega-conteudo">
+                            <i class="bi bi-shop"></i>
+
+                            <span>
+                                <strong>Retirar na loja</strong>
+                                <small>Buscar diretamente no estabelecimento</small>
+                            </span>
+                        </span>
+                    </label>
+                </div>
+
+                <small
+                    class="mensagem-erro"
+                    id="erroFormaRecebimento"
+                ></small>
+            </fieldset>
+
+            <div
+                class="campo-formulario campo-endereco"
+                id="areaEndereco"
+                hidden
+            >
+                <label for="enderecoComprador">
+                    Endereço completo
+                    <span aria-hidden="true">*</span>
+                </label>
+
+                <textarea
+                    id="enderecoComprador"
+                    name="enderecoComprador"
+                    rows="3"
+                    maxlength="250"
+                    placeholder="Rua, número, bairro e complemento"
+                    autocomplete="street-address"
+                ></textarea>
+
+                <small
+                    class="mensagem-erro"
+                    id="erroEnderecoComprador"
+                ></small>
+            </div>
+
+            <div class="campo-formulario">
+                <label for="observacoesComprador">
+                    Observações
+                    <span class="campo-opcional">Opcional</span>
+                </label>
+
+                <textarea
+                    id="observacoesComprador"
+                    name="observacoesComprador"
+                    rows="3"
+                    maxlength="300"
+                    placeholder="Exemplo: entregar após as 18h"
+                ></textarea>
+            </div>
+
+            <div class="acoes-modal-pedido">
+                <button
+                    type="button"
+                    class="botao-cancelar-pedido"
+                    id="cancelarPedido"
+                >
+                    Cancelar
+                </button>
+
+                <button
+                    type="submit"
+                    class="botao-confirmar-pedido"
+                    id="confirmarPedido"
+                >
+                    <i class="bi bi-whatsapp"></i>
+                    Enviar pedido
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+window.configuracaoLoja = <%- JSON.stringify({
+    id: loja.slug,
+    slug: loja.slug,
+    nome: loja.nome,
+    whatsapp: loja.whatsapp || "",
+    catalogoUrl: `/catalogo/${encodeURIComponent(loja.slug)}`,
+    apiProdutosUrl: `/api/produtos?loja=${encodeURIComponent(loja.slug)}`,
+    atendimento: { entregaAtiva: true, retiradaAtiva: true },
+    endereco: {},
+    cores: {
+        principal: loja.cor_primaria || "#1688f8",
+        whatsapp: loja.cor_whatsapp || "#25d366"
+    }
+}).replace(/</g, "\u003c") %>;
+</script>
+<script src="/js/script.js?v=11"></script>
+
+</body>
+</html>

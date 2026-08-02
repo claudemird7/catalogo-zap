@@ -1,0 +1,101 @@
+<%- include("../partials/header") %>
+
+<main class="pagina-produto">
+    <a href="/catalogo/<%= encodeURIComponent(loja.slug) %>" class="voltar-catalogo"><i class="bi bi-arrow-left"></i> Voltar ao catálogo</a>
+
+    <section class="produto-detalhes">
+        <div class="produto-galeria">
+            <div class="produto-imagem-principal">
+                <% if (produto.imagens.length) { %>
+                    <img id="imagemPrincipal" src="<%= produto.imagens[0] %>" alt="<%= produto.nome %>">
+                <% } else { %>
+                    <div id="imagemPrincipal" class="produto-sem-imagem"><i class="bi bi-image"></i><span>Sem imagem</span></div>
+                <% } %>
+            </div>
+
+            <% if (produto.imagens.length > 1) { %>
+                <div class="produto-miniaturas">
+                    <% produto.imagens.forEach((imagem, indice) => { %>
+                        <button type="button" class="miniatura-produto <%= indice === 0 ? 'ativa' : '' %>" data-imagem="<%= imagem %>">
+                            <img src="<%= imagem %>" alt="Imagem <%= indice + 1 %> de <%= produto.nome %>">
+                        </button>
+                    <% }) %>
+                </div>
+            <% } %>
+        </div>
+
+        <div class="produto-dados">
+            <span class="produto-categoria"><%= produto.categoria %></span>
+            <% if (produto.atacado) { %><span class="produto-atacado-badge">PRODUTO NO ATACADO</span><% } %>
+            <h1><%= produto.nome %></h1>
+            <div class="produto-meta"><span>Ref.: <%= produto.referencia %></span></div>
+
+            <% if (produto.descricao) { %>
+                <p class="produto-descricao"><%= produto.descricao %></p>
+            <% } %>
+            <% if (produto.atacado) { %>
+                <p class="produto-atacado-info"><i class="bi bi-box-seam"></i> Venda exclusiva no atacado. Pedido mínimo de <strong><%= produto.quantidadeMinima %> unidades</strong>.</p>
+            <% } %>
+
+            <div class="produto-preco-detalhes">
+                <% if (produto.precoAntigo > produto.precoAtual) { %>
+                    <span class="preco-antigo-detalhes"><%= Number(produto.precoAntigo).toLocaleString('pt-BR',{style:'currency',currency:'BRL'}) %></span>
+                <% } %>
+                <div class="preco-atual-linha">
+                    <strong><%= Number(produto.precoAtual).toLocaleString('pt-BR',{style:'currency',currency:'BRL'}) %></strong>
+                    <% if (produto.precoAntigo > produto.precoAtual) { %>
+                        <span class="selo-desconto-detalhes">-<%= Math.round(((produto.precoAntigo-produto.precoAtual)/produto.precoAntigo)*100) %>%</span>
+                    <% } %>
+                </div>
+            </div>
+
+            <% if (produto.cores.length) { %>
+                <div class="grupo-variacao">
+                    <h2>Cor</h2>
+                    <div class="lista-cores" id="listaCores">
+                        <% produto.cores.forEach((cor, indice) => { %>
+                            <button type="button" class="opcao-cor <%= indice === 0 ? 'selecionada' : '' %>"
+                                data-cor="<%= cor.nome %>" data-cor-id="<%= cor.id %>" title="<%= cor.nome %>" aria-label="<%= cor.nome %>"
+                                style="--cor-opcao: <%= cor.valor %>"></button>
+                        <% }) %>
+                    </div>
+                    <span class="variacao-selecionada" id="corSelecionada"><%= produto.cores[0].nome %></span>
+                </div>
+            <% } %>
+
+            <% if (produto.tamanhos.length) { %>
+                <div class="grupo-variacao">
+                    <h2>Tamanho</h2>
+                    <div class="lista-tamanhos" id="listaTamanhos">
+                        <% produto.tamanhos.forEach((tamanho, indice) => { const nomeTamanho = typeof tamanho === 'string' ? tamanho : tamanho.nome; %>
+                            <button type="button" class="opcao-tamanho <%= indice === 0 ? 'selecionada' : '' %>" data-tamanho="<%= nomeTamanho %>" data-tamanho-id="<%= tamanho.id || '' %>"><%= nomeTamanho %></button>
+                        <% }) %>
+                    </div>
+                </div>
+            <% } %>
+
+            <div class="grupo-quantidade">
+                <span>Quantidade</span>
+                <% if ((produto.quantidadeMinima || 1) > 1) { %>
+                    <small class="quantidade-minima-aviso">Mínimo: <%= produto.quantidadeMinima %> unidades</small>
+                <% } %>
+                <small class="estoque-disponivel" id="estoqueDisponivel"></small>
+                <div class="controle-quantidade">
+                    <button type="button" id="diminuirQuantidade" aria-label="Diminuir quantidade"><i class="bi bi-dash"></i></button>
+                    <input type="number" id="quantidadeProduto" min="<%= produto.quantidadeMinima || 1 %>" value="<%= produto.quantidadeMinima || 1 %>" readonly>
+                    <button type="button" id="aumentarQuantidade" aria-label="Aumentar quantidade"><i class="bi bi-plus"></i></button>
+                </div>
+            </div>
+
+            <button type="button" class="botao-adicionar-produto" id="adicionarProduto"
+                data-produto-id="<%= produto.id %>" data-produto-nome="<%= produto.nome %>"
+                data-produto-preco="<%= produto.precoAtual %>" data-produto-imagem="<%= produto.imagem %>"
+                data-produto-quantidade-minima="<%= produto.quantidadeMinima || 1 %>" data-produto-atacado="<%= produto.atacado ? '1' : '0' %>">
+                <i class="bi bi-cart-plus"></i> Adicionar ao carrinho
+            </button>
+        </div>
+    </section>
+    <script type="application/json" id="variacoesProduto"><%- JSON.stringify(produto.variacoes || []) %></script>
+</main>
+
+<%- include("../partials/footer") %>

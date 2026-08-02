@@ -1,0 +1,113 @@
+<%- include("../partials/header") %>
+
+<nav class="barra-categorias" aria-label="Categorias de produtos">
+    <div class="categorias-conteudo" id="listaCategorias">
+        <button type="button" class="categoria-botao ativo" data-categoria="todos">
+            Todos
+        </button>
+
+        <% categorias.forEach((categoria) => { %>
+            <button
+                type="button"
+                class="categoria-botao"
+                data-categoria="<%= categoria.slug %>"
+            >
+                <%= categoria.nome %>
+            </button>
+        <% }) %>
+    </div>
+</nav>
+
+<main class="pagina-catalogo">
+    <% if (loja.banner) { %>
+        <section class="banner-loja mb-4">
+            <img
+                src="<%= loja.banner %>"
+                alt="Banner da <%= loja.nome %>"
+                class="img-fluid w-100 rounded-4"
+            >
+        </section>
+    <% } %>
+
+    <% if (loja.mensagem_boas_vindas) { %>
+        <div class="alert alert-light border mb-4">
+            <%= loja.mensagem_boas_vindas %>
+        </div>
+    <% } %>
+
+    <section class="cabecalho-listagem">
+        <% if (loja.logo) { %>
+            <div class="logo-loja mb-3">
+                <img
+                    src="<%= loja.logo %>"
+                    alt="<%= loja.nome %>"
+                    class="img-fluid"
+                    style="max-height: 80px;"
+                >
+            </div>
+        <% } %>
+
+        <div>
+            <p class="texto-secundario">
+                <%= loja.slogan || "Confira nossos produtos" %>
+            </p>
+            <h1><%= loja.nome %></h1>
+        </div>
+
+        <span class="quantidade-resultados" id="quantidadeResultados">
+            0 produtos
+        </span>
+    </section>
+
+    <section class="grade-produtos" id="produtos" aria-live="polite"></section>
+
+    <div class="nenhum-produto" id="nenhumProduto" hidden>
+        <i class="bi bi-search"></i>
+        <h2>Nenhum produto encontrado</h2>
+        <p>Tente pesquisar outro nome ou selecionar outra categoria.</p>
+    </div>
+</main>
+
+<button
+    type="button"
+    class="whatsapp-flutuante"
+    id="whatsappFlutuante"
+    aria-label="Falar pelo WhatsApp"
+>
+    <i class="bi bi-whatsapp"></i>
+</button>
+
+<% if (loja.texto_rodape || loja.instagram || loja.facebook || loja.tiktok || loja.site) { %>
+    <footer class="text-center text-muted py-4">
+        <% if (loja.texto_rodape) { %>
+            <p><%= loja.texto_rodape %></p>
+        <% } %>
+
+        <% if (loja.instagram || loja.facebook || loja.tiktok || loja.site) { %>
+            <div class="text-center">
+                <% if (loja.instagram) { %>
+                    <a href="<%= loja.instagram %>" target="_blank" rel="noopener noreferrer" class="btn btn-outline-dark btn-sm me-2" aria-label="Instagram">
+                        <i class="bi bi-instagram"></i>
+                    </a>
+                <% } %>
+                <% if (loja.facebook) { %>
+                    <a href="<%= loja.facebook %>" target="_blank" rel="noopener noreferrer" class="btn btn-outline-dark btn-sm me-2" aria-label="Facebook">
+                        <i class="bi bi-facebook"></i>
+                    </a>
+                <% } %>
+                <% if (loja.tiktok) { %>
+                    <a href="<%= loja.tiktok %>" target="_blank" rel="noopener noreferrer" class="btn btn-outline-dark btn-sm me-2" aria-label="TikTok">
+                        <i class="bi bi-tiktok"></i>
+                    </a>
+                <% } %>
+                <% if (loja.site) { %>
+                    <a href="<%= loja.site %>" target="_blank" rel="noopener noreferrer" class="btn btn-outline-dark btn-sm" aria-label="Site">
+                        <i class="bi bi-globe"></i>
+                    </a>
+                <% } %>
+            </div>
+        <% } %>
+    </footer>
+<% } %>
+
+<%- include("../partials/footer") %>

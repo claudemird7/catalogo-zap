@@ -1,0 +1,120 @@
+<%- include("partials/inicio", { titulo, paginaAtual, usuario }) %>
+
+<% if (usuario.emSuporte) { %>
+<section style="margin-bottom:18px;padding:14px 16px;border-radius:12px;background:#fff3cd;color:#664d03;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+    <strong>Modo suporte: você está acessando a loja <%= usuario.lojaNome %>.</strong>
+    <form method="post" action="/admin/voltar-premium">
+        <button type="submit" style="border:0;border-radius:9px;padding:9px 13px;background:#664d03;color:#fff;font-weight:700">Voltar ao Super Admin</button>
+    </form>
+</section>
+<% } %>
+
+<section class="dashboard-hero">
+    <div>
+        <span class="eyebrow">Visão geral</span>
+        <h1>Olá, <%= usuario.nome.split(" ")[0] %>!</h1>
+        <p>
+            Acompanhe os principais números
+            <%= usuario.lojaNome ? `da ${usuario.lojaNome}` : "da plataforma" %>.
+        </p>
+    </div>
+
+    <a class="primary-action" href="/admin/produtos/novo">
+        <i class="bi bi-plus-lg"></i>
+        <span>Novo produto</span>
+    </a>
+</section>
+
+<section class="stats-grid" aria-label="Resumo do catálogo">
+    <article class="stat-card">
+        <div class="stat-icon"><i class="bi bi-box-seam-fill"></i></div>
+        <div><span>Total de produtos</span><strong><%= resumo.produtos %></strong><small>Itens cadastrados</small></div>
+    </article>
+
+    <article class="stat-card">
+        <div class="stat-icon"><i class="bi bi-tags-fill"></i></div>
+        <div><span>Categorias</span><strong><%= resumo.categorias %></strong><small>Grupos organizados</small></div>
+    </article>
+
+    <article class="stat-card">
+        <div class="stat-icon"><i class="bi bi-check-circle-fill"></i></div>
+        <div><span>Produtos ativos</span><strong><%= resumo.ativos %></strong><small>Visíveis no catálogo</small></div>
+    </article>
+
+    <article class="stat-card">
+        <div class="stat-icon"><i class="bi bi-pause-circle-fill"></i></div>
+        <div><span>Produtos inativos</span><strong><%= resumo.inativos %></strong><small>Ocultos do catálogo</small></div>
+    </article>
+
+    <article class="stat-card">
+        <div class="stat-icon"><i class="bi bi-percent"></i></div>
+        <div><span>Promoções</span><strong><%= indicadores.promocao %></strong><small>Produtos promocionais</small></div>
+    </article>
+
+    <article class="stat-card">
+        <div class="stat-icon"><i class="bi bi-box2-heart-fill"></i></div>
+        <div><span>Atacado</span><strong><%= indicadores.atacado %></strong><small>Produtos com atacado</small></div>
+    </article>
+
+    <article class="stat-card">
+        <div class="stat-icon"><i class="bi bi-exclamation-triangle-fill"></i></div>
+        <div><span>Sem estoque</span><strong><%= indicadores.semEstoque %></strong><small>Requer atenção</small></div>
+    </article>
+</section>
+
+<section class="dashboard-grid">
+    <article class="panel-card quick-actions-card">
+        <div class="panel-heading">
+            <div><span class="eyebrow">Atalhos</span><h2>Acesso rápido</h2></div>
+        </div>
+
+        <div class="quick-actions">
+            <a href="/admin/produtos/novo">
+                <i class="bi bi-plus-circle-fill"></i>
+                <span><strong>Novo produto</strong><small>Cadastro individual simples</small></span>
+                <i class="bi bi-chevron-right"></i>
+            </a>
+
+            <a href="/admin/produtos">
+                <i class="bi bi-box-seam-fill"></i>
+                <span><strong>Gerenciar produtos</strong><small>Edite estoque, variações e preços</small></span>
+                <i class="bi bi-chevron-right"></i>
+            </a>
+
+            <a href="/admin/configuracoes">
+                <i class="bi bi-gear-fill"></i>
+                <span><strong>Configurações da loja</strong><small>Logo, banner, cores e contatos</small></span>
+                <i class="bi bi-chevron-right"></i>
+            </a>
+        </div>
+    </article>
+
+    <article class="panel-card progress-card">
+        <div class="panel-heading">
+            <div><span class="eyebrow">Situação</span><h2>Seu catálogo</h2></div>
+        </div>
+
+        <% const percentualAtivos = resumo.produtos > 0
+            ? Math.round((resumo.ativos / resumo.produtos) * 100)
+            : 0; %>
+
+        <div class="catalog-progress">
+            <div class="progress-number"><%= percentualAtivos %>%</div>
+            <div>
+                <strong>dos produtos estão ativos</strong>
+                <p>Mantenha os produtos atualizados para facilitar os pedidos.</p>
+            </div>
+        </div>
+
+        <div class="progress-track" aria-label="Percentual de produtos ativos">
+            <span style="width: <%= percentualAtivos %>%"></span>
+        </div>
+
+        <a href="/catalogo/<%= encodeURIComponent(usuario.lojaSlug || '') %>" target="_blank" rel="noopener noreferrer" class="secondary-action">
+            <i class="bi bi-eye-fill"></i>
+            Visualizar catálogo
+        </a>
+    </article>
+</section>
+
+<%- include("partials/fim") %>

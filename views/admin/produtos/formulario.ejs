@@ -1,0 +1,92 @@
+<%- include("../partials/inicio") %>
+<section class="page-heading"><div><a class="back-link" href="/admin/produtos"><i class="bi bi-arrow-left"></i> Voltar</a><h1><%= modo==='novo'?'Novo produto':'Editar produto' %></h1><p>Cadastre o produto e, se necessário, suas opções de cor e tamanho.</p></div></section>
+
+<% if(erros.length){ %><div class="admin-alert danger"><i class="bi bi-exclamation-triangle-fill"></i><div><strong>Revise os campos:</strong><ul><% erros.forEach(e=>{ %><li><%= e %></li><% }) %></ul></div></div><% } %>
+
+<form class="product-form" action="<%= acao %>" method="POST" enctype="multipart/form-data">
+    <section class="panel-card form-main-card">
+        <div class="form-section-title"><i class="bi bi-box-seam"></i><div><h2>Informações do produto</h2><p>Dados visíveis no catálogo.</p></div></div>
+        <div class="form-grid">
+            <label class="form-field full"><span>Nome *</span><input name="nome" required maxlength="120" value="<%= produto.nome||'' %>"></label>
+            <label class="form-field"><span>Categoria</span><select name="categoriaId"><option value="">Sem categoria</option><% categorias.forEach(c=>{ %><option value="<%= c.id %>" <%= String(produto.categoria_id||produto.categoriaId||'')===String(c.id)?'selected':'' %>><%= c.nome %></option><% }) %></select></label>
+            <label class="form-field"><span>Status</span><select name="ativo"><option value="1" <%= Number(produto.ativo)===1?'selected':'' %>>Ativo</option><option value="0" <%= Number(produto.ativo)===0?'selected':'' %>>Inativo</option></select></label>
+            <% const qtdMinima = produto.quantidade_minima !== undefined ? produto.quantidade_minima : (produto.quantidadeMinima || 1); %>
+            <label class="form-field"><span>Quantidade mínima *</span><input type="number" name="quantidadeMinima" min="1" step="1" required inputmode="numeric" value="<%= qtdMinima %>"><small>Menor quantidade permitida no pedido.</small></label>
+            <label class="form-field"><span>Preço *</span><div class="money-input"><span>R$</span><input name="preco" required inputmode="decimal" value="<%= produto.preco!=null?Number(produto.preco).toFixed(2).replace('.',','):'' %>" placeholder="0,00"></div></label>
+            <% const promo=produto.preco_promocional!==undefined?produto.preco_promocional:produto.precoPromocional; %>
+            <label class="form-field"><span>Preço promocional</span><div class="money-input"><span>R$</span><input name="precoPromocional" inputmode="decimal" value="<%= promo!=null?Number(promo).toFixed(2).replace('.',','):'' %>" placeholder="Opcional"></div></label>
+            <label class="form-field full"><span>Descrição</span><textarea name="descricao" rows="5" maxlength="1000"><%= produto.descricao||'' %></textarea></label>
+        </div>
+
+        <% const modoVenda = produto.modo_venda || produto.modoVenda || (Number(produto.possui_atacado !== undefined ? produto.possui_atacado : produto.possuiAtacado) === 1 ? 'varejo_atacado' : 'varejo'); %>
+        <% const temAtacado = modoVenda === 'varejo_atacado' || modoVenda === 'atacado'; %>
+        <div class="wholesale-box">
+            <label class="form-field full">
+                <span>Modo de venda *</span>
+                <select name="modoVenda" data-sale-mode required>
+                    <option value="varejo" <%= modoVenda === 'varejo' ? 'selected' : '' %>>Somente varejo</option>
+                    <option value="varejo_atacado" <%= modoVenda === 'varejo_atacado' ? 'selected' : '' %>>Varejo + atacado</option>
+                    <option value="atacado" <%= modoVenda === 'atacado' ? 'selected' : '' %>>Somente atacado</option>
+                </select>
+                <small>Quando houver atacado, o sistema cria e mantém a versão atacadista automaticamente.</small>
+            </label>
+            <div class="wholesale-fields" data-wholesale-fields <%= temAtacado ? '' : 'hidden' %>>
+                <label class="form-field"><span>Preço no atacado *</span><div class="money-input"><span>R$</span><input name="precoAtacado" inputmode="decimal" value="<%= produto.preco_atacado!=null?Number(produto.preco_atacado).toFixed(2).replace('.',','):(produto.precoAtacado!=null?Number(produto.precoAtacado).toFixed(2).replace('.',','):'') %>" placeholder="0,00"></div></label>
+                <label class="form-field"><span>Quantidade mínima do atacado *</span><input type="number" name="quantidadeMinimaAtacado" min="2" step="1" inputmode="numeric" value="<%= produto.quantidade_minima_atacado||produto.quantidadeMinimaAtacado||10 %>"><small>Ex.: 10 unidades.</small></label>
+                <div class="wholesale-note full"><i class="bi bi-arrow-repeat"></i><span>Nome, descrição, imagem, cores, tamanhos e estoque são reaproveitados automaticamente. O estoque é compartilhado entre varejo e atacado.</span></div>
+            </div>
+        </div>
+
+        <div class="variations-admin">
+            <div class="form-section-title"><i class="bi bi-sliders"></i><div><h2>Variações</h2><p>Opcional. O produto pode ter somente cores, somente tamanhos ou ambos.</p></div></div>
+
+            <div class="variation-block">
+                <div class="variation-heading"><div><strong>Cores</strong><span>Informe o nome e escolha a cor aproximada.</span></div><button type="button" class="secondary-action compact" data-add-color><i class="bi bi-plus-lg"></i> Adicionar cor</button></div>
+                <div class="variation-list" data-color-list>
+                    <% (produto.cores||[]).forEach(cor=>{ %>
+                        <div class="variation-row color-row">
+                            <input name="corNome" maxlength="50" value="<%= cor.nome %>" placeholder="Ex.: Azul">
+                            <input type="color" name="corValor" value="<%= cor.valor||'#808080' %>" aria-label="Cor">
+                            <button type="button" class="remove-variation" data-remove-variation aria-label="Remover cor"><i class="bi bi-trash3"></i></button>
+                        </div>
+                    <% }) %>
+                </div>
+                <p class="variation-empty" data-color-empty <%= (produto.cores||[]).length?'hidden':'' %>>Nenhuma cor cadastrada.</p>
+            </div>
+
+            <div class="variation-block">
+                <div class="variation-heading"><div><strong>Tamanhos</strong><span>Use opções como P, M, G, 38, 39 ou Único.</span></div><button type="button" class="secondary-action compact" data-add-size><i class="bi bi-plus-lg"></i> Adicionar tamanho</button></div>
+                <div class="variation-list" data-size-list>
+                    <% (produto.tamanhos||[]).forEach(tamanho=>{ %>
+                        <div class="variation-row size-row">
+                            <input name="tamanhoNome" maxlength="30" value="<%= tamanho.nome||tamanho %>" placeholder="Ex.: M">
+                            <button type="button" class="remove-variation" data-remove-variation aria-label="Remover tamanho"><i class="bi bi-trash3"></i></button>
+                        </div>
+                    <% }) %>
+                </div>
+                <p class="variation-empty" data-size-empty <%= (produto.tamanhos||[]).length?'hidden':'' %>>Nenhum tamanho cadastrado.</p>
+            </div>
+
+            <div class="variation-block stock-block">
+                <div class="variation-heading"><div><strong>Estoque por variação</strong><span>Informe o estoque disponível para cada combinação.</span></div></div>
+                <div class="stock-table-wrap">
+                    <table class="stock-table">
+                        <thead><tr><th>Cor</th><th>Tamanho</th><th>Estoque</th></tr></thead>
+                        <tbody data-stock-list></tbody>
+                    </table>
+                </div>
+                <p class="variation-empty" data-stock-empty>Nenhuma variação disponível. Adicione cores e/ou tamanhos.</p>
+            </div>
+        </div>
+        <script type="application/json" id="estoquesIniciais"><%- JSON.stringify((produto.variacoes||[]).map(v=>({chave:`${v.cor||''}|${v.tamanho||''}`,estoque:v.estoque||0}))) %></script>
+    </section>
+
+    <aside class="panel-card image-card">
+        <div class="form-section-title"><i class="bi bi-image"></i><div><h2>Imagem</h2><p>JPG, PNG ou WebP, até 5 MB.</p></div></div>
+        <div class="image-preview" data-image-preview><% if(produto.imagem){ %><img src="<%= produto.imagem %>" alt="Prévia"><% }else{ %><div><i class="bi bi-cloud-arrow-up"></i><strong>Escolha uma imagem</strong></div><% } %></div>
+        <label class="upload-button"><i class="bi bi-upload"></i> Selecionar imagem<input type="file" name="imagem" accept="image/jpeg,image/png,image/webp" data-image-input></label>
+    </aside>
+
+    <div class="form-actions"><a href="/admin/produtos" class="secondary-action">Cancelar</a><button class="primary-action"><i class="bi bi-check-lg"></i> Salvar produto</button></div>
+</form>
+<%- include("../partials/fim") %>

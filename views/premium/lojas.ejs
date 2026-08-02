@@ -1,0 +1,24 @@
+<%- include("partials/inicio", { titulo, paginaAtual, usuario }) %>
+<% if (mensagem) { %><div class="alert-success"><%= mensagem %></div><% } %>
+<section class="panel-card">
+<form class="filters" method="get" action="/premium/lojas">
+    <label><span>Pesquisar</span><input name="busca" value="<%= filtros.busca %>" placeholder="Nome, responsável ou e-mail"></label>
+    <label><span>Status</span><select name="status"><option value="">Todos</option><option value="ativa" <%= filtros.status==='ativa'?'selected':'' %>>Ativas</option><option value="bloqueada" <%= filtros.status==='bloqueada'?'selected':'' %>>Bloqueadas</option></select></label>
+    <label><span>Plano</span><select name="planoId"><option value="">Todos</option><% planos.forEach(p => { %><option value="<%= p.id %>" <%= filtros.planoId===p.id?'selected':'' %>><%= p.nome %></option><% }) %></select></label>
+    <button class="primary-button" type="submit"><i class="bi bi-search"></i> Filtrar</button>
+</form>
+<div class="table-summary"><strong><%= total %> loja(s)</strong></div>
+<div class="responsive-table"><table><thead><tr><th>Loja</th><th>Responsável</th><th>Plano</th><th>Produtos</th><th>Último acesso</th><th>Status</th><th>Ações</th></tr></thead><tbody>
+<% lojas.forEach(loja => { %><tr>
+<td><a href="/premium/lojas/<%= loja.id %>"><strong><%= loja.nome %></strong></a><small>/catalogo/<%= loja.slug %></small></td>
+<td><%= loja.responsavel || '-' %><small><%= loja.usuario_email || loja.email || '' %></small></td>
+<td><%= loja.plano_nome || 'Sem plano' %><small><%= Number(loja.valor_mensal || 0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'}) %></small></td>
+<td><%= loja.total_produtos %></td><td><%= loja.ultimo_acesso ? new Date(loja.ultimo_acesso).toLocaleString('pt-BR') : 'Nunca' %></td>
+<td><span class="status <%= loja.ativo?'ativo':'bloqueado' %>"><%= loja.ativo?'Ativa':'Bloqueada' %></span></td>
+<td><div class="actions"><a title="Detalhes" href="/premium/lojas/<%= loja.id %>"><i class="bi bi-eye"></i></a><a title="Editar" href="/premium/lojas/<%= loja.id %>/editar"><i class="bi bi-pencil"></i></a><form method="post" action="/premium/lojas/<%= loja.id %>/alternar"><button title="<%= loja.ativo?'Bloquear':'Ativar' %>"><i class="bi <%= loja.ativo?'bi-slash-circle':'bi-check-circle' %>"></i></button></form></div></td>
+</tr><% }) %>
+<% if (!lojas.length) { %><tr><td colspan="7" class="empty-state">Nenhuma loja encontrada.</td></tr><% } %>
+</tbody></table></div>
+<% if (totalPaginas > 1) { %><nav class="pagination"><% for(let p=1;p<=totalPaginas;p++){ %><a class="<%= p===pagina?'ativo':'' %>" href="?busca=<%= encodeURIComponent(filtros.busca) %>&status=<%= filtros.status %>&planoId=<%= filtros.planoId||'' %>&pagina=<%= p %>"><%= p %></a><% } %></nav><% } %>
+</section>
+<%- include("partials/fim") %>

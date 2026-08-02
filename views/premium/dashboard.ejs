@@ -1,0 +1,28 @@
+<%- include("partials/inicio", { titulo, paginaAtual, usuario }) %>
+<% if (mensagem) { %><div class="alert-success"><%= mensagem %></div><% } %>
+<section class="metric-grid">
+    <article class="metric-card"><i class="bi bi-shop"></i><div><span>Total de lojas</span><strong><%= resumo.lojas %></strong><small><%= resumo.ativas %> ativas</small></div></article>
+    <article class="metric-card"><i class="bi bi-check-circle"></i><div><span>Lojas ativas</span><strong><%= resumo.ativas %></strong><small>Operando normalmente</small></div></article>
+    <article class="metric-card"><i class="bi bi-slash-circle"></i><div><span>Bloqueadas</span><strong><%= resumo.bloqueadas %></strong><small>Precisam de atenção</small></div></article>
+    <article class="metric-card"><i class="bi bi-box-seam"></i><div><span>Produtos</span><strong><%= resumo.produtos %></strong><small>Em toda a plataforma</small></div></article>
+    <article class="metric-card"><i class="bi bi-cash-coin"></i><div><span>Receita mensal</span><strong><%= Number(resumo.receita).toLocaleString('pt-BR',{style:'currency',currency:'BRL'}) %></strong><small>Planos ativos</small></div></article>
+    <article class="metric-card"><i class="bi bi-calendar-event"></i><div><span>Vencendo em 7 dias</span><strong><%= resumo.vencendo %></strong><small>Assinaturas</small></div></article>
+</section>
+<section class="dashboard-columns">
+    <article class="panel-card">
+        <div class="panel-title"><div><span class="eyebrow">Clientes recentes</span><h2>Últimas lojas</h2></div><a href="/premium/lojas">Ver todas</a></div>
+        <div class="responsive-table"><table><thead><tr><th>Loja</th><th>Plano</th><th>Produtos</th><th>Status</th></tr></thead><tbody>
+        <% lojasRecentes.forEach(loja => { %><tr><td><a href="/premium/lojas/<%= loja.id %>"><strong><%= loja.nome %></strong></a><small><%= loja.usuario_email || loja.email || '-' %></small></td><td><%= loja.plano_nome || 'Sem plano' %></td><td><%= loja.total_produtos %></td><td><span class="status <%= loja.ativo ? 'ativo' : 'bloqueado' %>"><%= loja.ativo ? 'Ativa' : 'Bloqueada' %></span></td></tr><% }) %>
+        </tbody></table></div>
+    </article>
+    <article class="panel-card">
+        <div class="panel-title"><div><span class="eyebrow">Próximos vencimentos</span><h2>Assinaturas</h2></div></div>
+        <div class="list-stack"><% if (!vencimentos.length) { %><p class="empty-state">Nenhum vencimento próximo.</p><% } %>
+        <% vencimentos.forEach(item => { %><a class="list-item" href="/premium/lojas/<%= item.id %>"><div><strong><%= item.nome %></strong><small><%= item.plano_nome || 'Sem plano' %></small></div><span class="days <%= item.dias_restantes < 0 ? 'late' : '' %>"><%= item.dias_restantes < 0 ? 'Vencida' : item.dias_restantes + ' dias' %></span></a><% }) %></div>
+    </article>
+</section>
+<section class="panel-card">
+    <div class="panel-title"><div><span class="eyebrow">Segurança e controle</span><h2>Atividades recentes</h2></div></div>
+    <div class="timeline"><% if (!atividades.length) { %><p class="empty-state">Nenhuma atividade registrada ainda.</p><% } %><% atividades.forEach(a => { %><div class="timeline-item"><i class="bi bi-clock-history"></i><div><strong><%= a.acao.replaceAll('_',' ') %></strong><p><%= a.detalhes || '' %></p><small><%= new Date(a.criado_em).toLocaleString('pt-BR') %><%= a.loja_nome ? ' · ' + a.loja_nome : '' %></small></div></div><% }) %></div>
+</section>
+<%- include("partials/fim") %>

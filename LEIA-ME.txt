@@ -1,0 +1,33 @@
+CATÁLOGO ZAP — ATUALIZAÇÃO: ESTOQUE + ATACADO
+
+1) Feche o servidor no Termux com Ctrl+C.
+2) Faça backup do projeto:
+   cd ~
+   cp -r catalogo-zap catalogo-zap-backup-antes-atacado
+
+3) Extraia este ZIP na pasta HOME:
+   cd ~
+   unzip catalogo-zap-atualizacao-estoque-atacado.zip
+
+4) Copie os arquivos por cima do projeto:
+   cp -rf ~/catalogo-zap-atualizacao-estoque-atacado/* ~/catalogo-zap/
+
+5) Entre no projeto e execute:
+   cd ~/catalogo-zap
+   npm run dev
+
+A migração do banco é automática ao iniciar o servidor.
+
+FUNCIONALIDADES:
+- estoque individual por combinação de cor e tamanho;
+- bloqueio de quantidade acima do estoque;
+- flag "produto também possui atacado";
+- preço e quantidade mínima do atacado;
+- criação automática da versão atacadista;
+- categoria Atacado criada automaticamente;
+- selo de atacado no catálogo e na página do produto;
+- estoque compartilhado entre varejo e atacado;
+- identificação ATACADO na mensagem do WhatsApp.
+
+IMPORTANTE:
+Produtos já existentes precisam ser editados e salvos uma vez para informar o estoque de cada variação.

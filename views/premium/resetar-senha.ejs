@@ -1,0 +1,5 @@
+<%- include("partials/inicio", { titulo, paginaAtual, usuario }) %>
+<a class="back-link" href="/premium/lojas/<%= loja.id %>">← Voltar para <%= loja.nome %></a>
+<% if(erro){ %><div class="alert-error"><%= erro %></div><% } %>
+<form class="panel-card narrow-form" method="post" action="/premium/lojas/<%= loja.id %>/resetar-senha"><h2>Nova senha do lojista</h2><p>A senha será alterada para o usuário <strong><%= loja.usuario_email || loja.email %></strong>.</p><label><span>Nova senha</span><input type="password" name="senha" minlength="6" required></label><label><span>Confirmar nova senha</span><input type="password" name="confirmar" minlength="6" required></label><button class="primary-button">Redefinir senha</button></form>
+<%- include("partials/fim") %>

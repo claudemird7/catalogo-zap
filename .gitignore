@@ -1,0 +1,28 @@
+node_modules/
+.env
+.env.*
+!.env.example
+
+# Banco local e arquivos auxiliares do SQLite
+database/*.db
+database/*.sqlite
+database/*.sqlite3
+database/*-wal
+database/*-shm
+database/*.db-journal
+
+# Arquivos enviados pelos usuários
+public/uploads/*
+!public/uploads/.gitkeep
+
+# Logs, temporários e pacotes de atualização
+logs/
+*.log
+*.zip
+ATUALIZACAO-*.txt
+
+# Sistema e editores
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

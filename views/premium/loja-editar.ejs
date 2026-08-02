@@ -1,0 +1,15 @@
+<%- include("partials/inicio", { titulo, paginaAtual, usuario }) %>
+<a class="back-link" href="/premium/lojas/<%= loja.id %>">← Voltar para detalhes</a>
+<% if(erro){ %><div class="alert-error"><%= erro %></div><% } %>
+<form class="panel-card form-grid" method="post" action="/premium/lojas/<%= loja.id %>/editar">
+<label><span>Nome da loja *</span><input name="nome" value="<%= loja.nome||'' %>" required></label>
+<label><span>Slug *</span><input name="slug" value="<%= loja.slug||'' %>" required><small>Endereço público do catálogo</small></label>
+<label><span>Responsável</span><input name="responsavel" value="<%= loja.responsavel||'' %>"></label>
+<label><span>E-mail de acesso *</span><input type="email" name="email" value="<%= loja.usuario_email||loja.email||'' %>" required></label>
+<label><span>WhatsApp</span><input name="whatsapp" value="<%= loja.whatsapp||'' %>"></label>
+<label><span>Plano *</span><select name="planoId" required><% planos.forEach(p=>{ %><option value="<%= p.id %>" <%= Number(loja.plano_id||loja.planoId)===p.id?'selected':'' %>><%= p.nome %></option><% }) %></select></label>
+<label><span>Vencimento</span><input type="date" name="vencimento" value="<%= loja.vencimento ? String(loja.vencimento).slice(0,10) : '' %>"></label>
+<label><span>Status da assinatura</span><select name="statusAssinatura"><option value="ativa" <%= loja.assinatura_status==='ativa'?'selected':'' %>>Ativa</option><option value="pendente" <%= loja.assinatura_status==='pendente'?'selected':'' %>>Pendente</option><option value="vencida" <%= loja.assinatura_status==='vencida'?'selected':'' %>>Vencida</option></select></label>
+<div class="form-actions"><a class="secondary-button" href="/premium/lojas/<%= loja.id %>">Cancelar</a><button class="primary-button">Salvar alterações</button></div>
+</form>
+<%- include("partials/fim") %>

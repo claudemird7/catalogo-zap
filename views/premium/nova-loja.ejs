@@ -1,0 +1,7 @@
+<%- include("partials/inicio", { titulo, paginaAtual, usuario }) %>
+<a class="back-link" href="/premium/lojas">← Voltar para lojas</a>
+<% if(erro){ %><div class="alert-error"><%= erro %></div><% } %>
+<form class="panel-card form-grid" method="post" action="/premium/lojas">
+<label><span>Nome da loja *</span><input name="nome" value="<%= dados.nome||'' %>" required></label><label><span>Responsável *</span><input name="responsavel" value="<%= dados.responsavel||'' %>" required></label><label><span>E-mail de acesso *</span><input type="email" name="email" value="<%= dados.email||'' %>" required></label><label><span>Senha inicial *</span><input type="password" name="senha" minlength="6" required></label><label><span>WhatsApp</span><input name="whatsapp" value="<%= dados.whatsapp||'' %>"></label><label><span>Plano *</span><select name="planoId" required><option value="">Selecione</option><% planos.forEach(p=>{ %><option value="<%= p.id %>" <%= Number(dados.planoId)===p.id?'selected':'' %>><%= p.nome %> — <%= Number(p.valor_mensal).toLocaleString('pt-BR',{style:'currency',currency:'BRL'}) %></option><% }) %></select></label><label><span>Vencimento</span><input type="date" name="vencimento" value="<%= dados.vencimento||'' %>"></label><div class="form-actions"><a class="secondary-button" href="/premium/lojas">Cancelar</a><button class="primary-button">Criar loja</button></div>
+</form>
+<%- include("partials/fim") %>
